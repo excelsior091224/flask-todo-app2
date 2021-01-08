@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>編集|{{ task.title }}|ToDo-App</title>
+{% endblock %}
+
+{% block body %}
+<div>
+    <ul>
+        <li><a href="{{url_for('index')}}">一覧へ</a></li>
+    </ul>
+</div>
+<div>
+    <h3>編集</h3>
+    <form action="" method="post">
+        {{ form_e.csrf_token }}
+        <section>
+            <h6>{{ form_e.title.label }}:</h6>
+            {{ form_e.title }}
+            {% if form_e.title.errors %}
+            <ul>
+                {% for error in form_e.title.errors %}
+                <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </section>
+        <section>
+            <h6>{{ form_e.text.label }}:</h6>
+            {{ form_e.text }}
+        </section>
+        <section>
+            <h6>{{ form_e.status.label }}:</h6>
+            {{ form_e.status }}
+        </section>
+        {{ form_e.submit }}
+    </form>
+</div>
+{% endblock %}

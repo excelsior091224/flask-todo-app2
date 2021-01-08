@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>ToDo-App</title>
+{% endblock %}
+
+{% block body %}
+<div>
+    <form action="{{ url_for('index') }}" method="post">
+        {{ form_i.csrf_token }}
+        <section>
+            <h6>
+                {{ form_i.title.label }}:
+            </h6>
+            {{ form_i.title }}
+            {% if form_i.title.errors %}
+            <ul>
+                {% for error in form_i.title.errors %}
+                <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </section>
+        <section>
+            <h6>{{ form_i.text.label }}:</h6>
+            {{ form_i.text }}
+        </section>
+        <section>
+            <h6>{{ form_i.status.label }}:</h6>
+            {{ form_i.status }}
+        </section>
+        {{ form_i.submit }}
+    </form>
+</div>
+<div>
+    <h1>タスク一覧</h1>
+    {% if tasks|length < 1 %}
+    <h4>タスクはありません</h4>
+    {% else %}
+    <table>
+        <tr>
+            <th>タイトル</th>
+            <th>状態</th>
+            <th>更新日時</th>
+            <th>アクション</th>
+        </tr>
+        {% for task in tasks %}
+        <tr>
+            <td><a href="{{url_for('detail', id=task.id)}}">{{ task.title }}</a></td>
+            {% if task.status == 1 %}
+            <td>実行中</td>
+            {% elif task.status == 2 %}
+            <td>完了</td>
+            {% else %}
+            <td>未実行</td>
+            {% endif %}
+            <td>{{ task.updated }}</td>
+            <td>
+                <a href="{{ url_for('edit' , id=task.id)}}">編集</a>
+                <a href="{{url_for('delete', id=task.id)}}">削除</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+</div>
+{% endblock %}
